@@ -19,7 +19,6 @@ def cos_p(t, N, c):
 def sin_p(t,N,c):
     return np.sin((1 - 1 / 3 * np.sqrt(1 - t * t)) * np.sqrt(N) * c * t)
 
-# c是一个常数,N是球上点的个数,D是数据维度
 def norm_circle_point(c=8*np.pi,N=128,D=768):
     np.random.seed(42)
     ts = 2 * np.linspace(0, N - 1, N) / (N - 1) - 1
@@ -72,13 +71,12 @@ def Sample_By_Cos(neg_f, n):
     return idx.detach().cpu()
 
 
-# neg_f 是负样本坐标, circle_f是圆上点的坐标, n是采样多少负样本, r是每次采样后画的球的半径
 def Grid_Sample(neg_f, circle_p, dis_neg_cir, n, r=1):
-    # random.seed(42)
-    # if neg_f.device.type == 'cuda':
-    #     neg_f = neg_f.detach().cpu().numpy()
-    #
-    # n = min(n,neg_f.shape[0])
+    random.seed(42)
+    if neg_f.device.type == 'cuda':
+        neg_f = neg_f.detach().cpu().numpy()
+    
+    n = min(n,neg_f.shape[0])
 
     neg_p_now = dis_neg_cir.argmin()
 
@@ -104,36 +102,4 @@ def Grid_Sample(neg_f, circle_p, dis_neg_cir, n, r=1):
     return sampled_neg_p
 
 
-# point = norm_circle_point(c=np.pi,N=128,D=3)
-# plt.figure(figsize=(4.5,5))
-# ax = plt.axes(projection='3d')
-# ax.scatter(point[:,0], point[:,1], point[:,2],c='r',alpha=0.45)
-# ax.plot(point[:,0], point[:,1], point[:,2])
-# plt.axis('off')
-# point2 = np.random.normal(0,1,size=(512,3))
-# point2/=norm(point2,axis=1).reshape(512,1)
-# ax.scatter(point2[:,0], point2[:,1], point2[:,2],alpha=0.6)
-# plt.axis('off')
-# plt.title('(b) Uniform distribution',x=0.51,y=0.13)
-# plt.title('(a) Equidistant distribution',x=0.51,y=0.13)
-# plt.show()
-# plt.savefig('uniform1.jpg',dpi=600,bbox_inches='tight',pad_inches=-0.7)
-# plt.show()
-# batch_size = 64
-# neg_f = np.random.normal(0,1,size=(batch_size,768))
-# point = norm_circle_point(N=2*batch_size)
-# dis_neg_cir = norm(neg_f, axis=1)
-# for i in range(100):
-#     sampled_neg_p = Grid_Sample(neg_f,point,dis_neg_cir,batch_size,r=1)
-# sampled_neg_idx = list(set(sampled_neg_idx))
-# sampled_neg_f = neg_f[sampled_neg_idx]
-# dis = [[norm(sampled_neg_f[i]-sampled_neg_f[j]) for i in range(j+1,len(sampled_neg_f))] for j in range(len(sampled_neg_f))]
-# a = []
-# for each in dis:
-#     a.extend(each)
-# print(sampled_neg_idx)
-# print(sampled_circle)
-# print(len(set(sampled_circle)))
-# print(len(sampled_neg_idx))
-# print(np.mean(a))
 
