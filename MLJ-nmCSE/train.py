@@ -211,13 +211,13 @@ class OurTrainingArguments(TrainingArguments):
         default=True
     )
     per_device_train_batch_size: int = field(
-        default=32
+        default=128
     )
     per_device_eval_batch_size: int = field(
         default=64
     )
     num_train_epochs: int = field(
-        default=1
+        default=100
     )
     learning_rate: float = field(
         default=3e-5
@@ -235,7 +235,7 @@ class OurTrainingArguments(TrainingArguments):
         default = 0.8
     )
     alpha: float = field(
-        default = 7e-3
+        default = 7e-4
     )
 
     @cached_property
