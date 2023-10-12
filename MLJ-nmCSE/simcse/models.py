@@ -236,14 +236,9 @@ def cl_forward(cls,
         z2 = torch.cat(z2_list, 0)
 
 
-    # alpha = 0.007
-    # alpha = 3.5e-3
-    # alpha = 1.75e-3
-    # alpha = 1.5e-3
     # alpha = 6e-4
     fill_value = 2 / (1 + np.exp(-alpha * epochs)) - 1
     if fill_value <= 1:
-        # 对于z1的mean找到其对应的z2
         temp_z = z1 - z2.mean(0)
         dis_neg_cir = norm(temp_z.detach().cpu().numpy(), axis=1)
 
@@ -251,7 +246,6 @@ def cl_forward(cls,
 
         neg_idx = torch.tensor(
             [grid_sample.Grid_Sample(temp_z, norm_point, dis_neg_cir, n=z1.shape[0], r=1)])
-        # neg_idx = torch.tensor(np.random.randint(0,temp_z.shape[0],z1.shape[0])).reshape(1,-1)
         idx = torch.tensor(torch.unique(neg_idx),dtype=torch.int64)
         neg_idx_ = torch.tensor(grid_sample.Sample_By_Cos(temp_z, len(idx)))
         idx_ = torch.tensor(torch.unique(neg_idx_), dtype=torch.int64)
@@ -270,8 +264,6 @@ def cl_forward(cls,
         neg_weight = neg_weight.to(z1.device)
 
         cos_sim = cls.sim(z1.unsqueeze(1), z2.unsqueeze(0))
-        f.write(str(avg_cos(z1).item()) + '\t' + str(avg_cos(z1[idx]).item()) + '\t' + str(avg_cos(z1[idx_]).item()) + '\n')
-
         cos_sim *= neg_weight
     else:
         temp_z1.append([z2.detach().cpu().numpy()])
