@@ -30,9 +30,7 @@ def print_table(task_names, scores):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_name_or_path", type=str,
-                        # default='./result/my-unsup-simcse-bert-base-uncased/checkpoint-2400',
-                        # default='./un-simcse',
-                        default = './bert',
+                        default='./result/my-unsup-simcse-bert-base-uncased/checkpoint-2400',
                         help="Transformers' model name or path")
     # parser.add_argument("--model_name_or_path", type=str, default='./bert',
     #         help="Transformers' model name or path")
